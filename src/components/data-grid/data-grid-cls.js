@@ -68,7 +68,7 @@ export class DataGridClsComponent extends React.Component {
     return (
       <>
         <Button onClick={this.onAdd}>Ekle</Button>
-        <Button onClick={this.sirala}>Sıralama</Button>
+        <Button onClick={this.sirala} className="btn btn-warning">Sıralama</Button>
         <table className="table">
           <thead>
             <tr>

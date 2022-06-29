@@ -74,7 +74,7 @@ export function DataGrid() {
     return (
     <>
       <Button onClick={onAdd}>Ekle</Button>
-      <Button onClick={siralaClick}>Sirala</Button>
+      <Button onClick={siralaClick} className="btn btn-warning">Sıralama</Button>
       <table className="table">
         <thead>
           <tr>
