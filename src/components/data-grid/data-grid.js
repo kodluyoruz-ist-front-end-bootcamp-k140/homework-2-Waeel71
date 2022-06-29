@@ -9,6 +9,8 @@ export function DataGrid() {
 
   const [todo, setTodo] = useState(null)
 
+  const [state,setState] = useState(false)
+
   useEffect(() => {
     loadData()
   }, [])
@@ -27,29 +29,52 @@ export function DataGrid() {
   }
 
   const renderBody = () => {
-    return (
-      <React.Fragment>
-        {items.sort((a, b) => b.id - a.id).map((item, i) => {
-          return (
-            <tr key={i}>
-              <th scope="row" >{item.id}</th>
-              <td>{item.title}</td>
-              <td>{item.completed ? "Tamamlandı" : "Yapılacak"}</td>
-              <td>
-                <Button className="btn btn-xs btn-danger" onClick={() => onRemove(item.id)}>Sil</Button>
-                <Button className="btn btn-xs btn-warning" onClick={() => onEdit(item)}>Düzenle</Button>
-              </td>
-            </tr>
-          )
-        })}
-      </React.Fragment>
-    )
+    if(state == false){
+      return (
+        <React.Fragment>
+          {
+            items.sort((a, b) => b.id - a.id).map((item, i) => {
+            return (
+              <tr key={i}>
+                <th scope="row" >{item.id}</th>
+                <td>{item.title}</td>
+                <td>{item.completed ? "Tamamlandı" : "Yapılacak"}</td>
+                <td>
+                  <Button className="btn btn-xs btn-danger" onClick={() => onRemove(item.id)}>Sil</Button>
+                  <Button className="btn btn-xs btn-warning" onClick={() => onEdit(item)}>Düzenle</Button>
+                </td>
+              </tr>
+            )
+          })}
+        </React.Fragment>
+      )
+    }else{
+      return (
+        <React.Fragment>
+          {
+            items.sort((b, a) => b.id - a.id).map((item, i) => {
+            return (
+              <tr key={i}>
+                <th scope="row" >{item.id}</th>
+                <td>{item.title}</td>
+                <td>{item.completed ? "Tamamlandı" : "Yapılacak"}</td>
+                <td>
+                  <Button className="btn btn-xs btn-danger" onClick={() => onRemove(item.id)}>Sil</Button>
+                  <Button className="btn btn-xs btn-warning" onClick={() => onEdit(item)}>Düzenle</Button>
+                </td>
+              </tr>
+            )
+          })}
+        </React.Fragment>
+      )
+    }
   }
 
   const renderTable = () => {
     return (
     <>
       <Button onClick={onAdd}>Ekle</Button>
+      <Button onClick={siralaClick}>Sirala</Button>
       <table className="table">
         <thead>
           <tr>
@@ -67,6 +92,13 @@ export function DataGrid() {
     )
   }
 
+  function siralaClick (){
+    if(state == false){
+      setState(true)
+    }else{
+      setState(false)
+    }
+  }
   const saveChanges = () => {
 
     // insert 

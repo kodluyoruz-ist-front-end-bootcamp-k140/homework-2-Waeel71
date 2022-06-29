@@ -7,7 +7,8 @@ export class DataGridClsComponent extends React.Component {
   state = {
     loading: false,
     items: [],
-    todo: null
+    todo: null,
+    siralama: false
   }
 
   componentDidMount() {
@@ -26,7 +27,7 @@ export class DataGridClsComponent extends React.Component {
   }
 
   renderBody = () => {
-    return (
+    if(this.state.siralama == false){return (
       <React.Fragment>
         {this.state.items.sort((a, b) => b.id - a.id).map((item, i) => {
           return (
@@ -42,13 +43,32 @@ export class DataGridClsComponent extends React.Component {
           )
         })}
       </React.Fragment>
-    )
+    )}else{
+      return (
+        <React.Fragment>
+          {this.state.items.sort((b, a) => b.id - a.id).map((item, i) => {
+            return (
+              <tr key={i}>
+                <th scope="row" >{item.id}</th>
+                <td>{item.title}</td>
+                <td>{item.completed ? "Tamamlandı" : "Yapılacak"}</td>
+                <td>
+                  <Button className="btn btn-xs btn-danger" onClick={() => this.onRemove(item.id)}>Sil</Button>
+                  <Button className="btn btn-xs btn-warning" onClick={() => this.onEdit(item)}>Düzenle</Button>
+                </td>
+              </tr>
+            )
+          })}
+        </React.Fragment>
+      )
+    }
   }
 
   renderTable = () => {
     return (
       <>
         <Button onClick={this.onAdd}>Ekle</Button>
+        <Button onClick={this.sirala}>Sıralama</Button>
         <table className="table">
           <thead>
             <tr>
@@ -66,6 +86,13 @@ export class DataGridClsComponent extends React.Component {
     )
   }
 
+  sirala = () => {
+    if(this.state.siralama == false){
+      this.setState({siralama: true})
+    }else{
+      this.setState({siralama: false})
+    }
+  }
   saveChanges = () => {
     // insert
     const { todo, items } = this.state
