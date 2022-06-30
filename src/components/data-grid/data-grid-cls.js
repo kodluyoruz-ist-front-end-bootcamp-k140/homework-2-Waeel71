@@ -8,7 +8,9 @@ export class DataGridClsComponent extends React.Component {
     loading: false,
     items: [],
     todo: null,
-    siralama: false
+    siralama: false,
+    min : 0,
+    max : 50
   }
 
   componentDidMount() {
@@ -30,7 +32,8 @@ export class DataGridClsComponent extends React.Component {
     if(this.state.siralama == false){return (
       <React.Fragment>
         {this.state.items.sort((a, b) => b.id - a.id).map((item, i) => {
-          return (
+           if(item.id <= this.state.max && item.id >this.state.min)
+          {return (
             <tr key={i}>
               <th scope="row" >{item.id}</th>
               <td>{item.title}</td>
@@ -40,14 +43,15 @@ export class DataGridClsComponent extends React.Component {
                 <Button className="btn btn-xs btn-warning" onClick={() => this.onEdit(item)}>Düzenle</Button>
               </td>
             </tr>
-          )
+          )}
         })}
       </React.Fragment>
     )}else{
       return (
         <React.Fragment>
           {this.state.items.sort((b, a) => b.id - a.id).map((item, i) => {
-            return (
+            if(item.id <= this.state.max && item.id >this.state.min)
+            {return (
               <tr key={i}>
                 <th scope="row" >{item.id}</th>
                 <td>{item.title}</td>
@@ -57,7 +61,7 @@ export class DataGridClsComponent extends React.Component {
                   <Button className="btn btn-xs btn-warning" onClick={() => this.onEdit(item)}>Düzenle</Button>
                 </td>
               </tr>
-            )
+            )}
           })}
         </React.Fragment>
       )
@@ -81,9 +85,41 @@ export class DataGridClsComponent extends React.Component {
           <tbody>
             {this.renderBody()}
           </tbody>
+          <React.Fragment>
+          {this.state.items.map((item, i) => {
+            if (i == 49 || i == 99 || i == 149 || i==199)
+              return (
+                <Button type="button" className="btn btn-outline-primary sayfalama"
+                 data-id={++i} onClick={this.sayfalaClick}>
+                  {i}
+                </Button>
+              );
+          })}
+        </React.Fragment>
         </table>
     </>
     )
+  }
+
+  sayfalaClick = (e) => {
+    switch(e.target.getAttribute("data-id")){
+      case "50": 
+      this.setState({min: 0})
+      this.setState({max: 50})
+      break;
+      case "100": 
+      this.setState({min: 50})
+      this.setState({max: 100})
+      break;
+      case "150": 
+      this.setState({min: 100})
+      this.setState({max: 150})
+      break;
+      case "200": 
+      this.setState({min: 150})
+      this.setState({max: 200})
+      break; 
+    }
   }
 
   sirala = () => {
